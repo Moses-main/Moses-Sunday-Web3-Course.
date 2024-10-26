@@ -1,8 +1,20 @@
-function dominantDirection(text) {}
+function dominantDirection(text) {
+  let scripts = countBy(text, (char) => {
+    let script = characterScript(char.codePointAt(0));
+    return script ? script.direction : "none";
+  }).filter(({ name }) => name !== "none");
+  if (scripts.length === 0) return "No dominant direction";
 
-const helperfun = (text) => {
-  let rtlScript = text.filter((s) => s.direction == "rtl");
-};
+  return scripts.reduce((a, b) => (a.count > b.count ? a : b)).name;
+}
+
+/*
+HELPER FUNCTIONS and the dummy files are below :
+1. countBy Function
+2. characterScript Function
+3. SCRIPTS dummy file
+
+*/
 
 // The count by function
 
@@ -51,3 +63,43 @@ function textScripts(text) {
     })
     .join(".");
 }
+
+// SCRIPTS dummy text
+const SCRIPTS = [
+  {
+    name: "Latin",
+    ranges: [
+      [65, 91],
+      [97, 123],
+    ],
+    direction: "ltr",
+    year: -700,
+    living: true,
+    link: "https://en.wikipedia.org/wiki/Latin_alphabet",
+  },
+  {
+    name: "Arabic",
+    ranges: [
+      [1536, 1541],
+      [1542, 1548],
+      [1563, 1564],
+    ],
+    direction: "rtlde",
+    year: 400,
+    living: true,
+    link: "https://en.wikipedia.org/wiki/Arabic_alphabet",
+  },
+  {
+    name: "Han",
+    ranges: [
+      [65, 91],
+      [97, 123],
+    ],
+    direction: "ltr",
+    year: -700,
+    living: true,
+    link: "https://en.wikipedia.org/wiki/Latin_alphabet",
+  },
+];
+
+console.log(dominantDirection("Hello World"));
