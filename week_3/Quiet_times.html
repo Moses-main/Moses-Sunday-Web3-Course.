@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiet Times</title>
+  </head>
+  <body>
+    <script>
+      async function activityTable(day) {
+        //1. initialize an array for the hours
+
+        const hoursTable = Array(24).fill(0);
+
+        //2. Read the list of the logs
+        const logFileList = await textFile("camera_logs.txt");
+        const logFiles = logFileList.trim().split("\n");
+
+        // 3. Process each log file
+        for (const logFile of logFiles) {
+          const fileContent = await textFile(logFile);
+          const timestamps = fileContent.trim().split("\n");
+
+          // 4. process each timestamps in the log file
+
+          for (const timestampStr of timestamps) {
+            const timestamp = Number(timestampStr);
+            const date = new Date(timestamp);
+
+            // 5. check if the timestamp's day matches the specified day
+            if (date.getDay() === day) {
+              const hour = date.getHours();
+              hoursTable[hour]++;
+            }
+          }
+        }
+        return hoursTable;
+      }
+      // the fextFile helper function
+      function textFile(filename) {
+        return new Promise((resolve, reject) => {
+          readTextFile(filename, (text, error) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(text);
+            }
+          });
+        });
+      }
+
+      // textfile function
+      function textFile(filename) {
+        return new Promise((resolve, reject) => {
+          readTextFile(filename, (text, error) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(text);
+            }
+          });
+        });
+      }
+
+      //Test case for the function activityTable
+      activityTable(1).then((table) => console.log(activityGraph(table)));
+    </script>
+  </body>
+</html>

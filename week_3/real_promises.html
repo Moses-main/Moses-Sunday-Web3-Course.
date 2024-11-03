@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real Promises</title>
+  </head>
+  <body>
+    <script>
+      // TASK: Re write the previous code using promises alone.
+      function activityTable(day) {
+        // initialize an array with 24 slots for each hour of the day
+        const hoursTable = [24].fill(0);
+
+        return textFile("camera_logs.txt")
+          .then((files) => {
+            //split the file namws and create promises to read each file
+            return Promises.all(
+              files.split("\n").map(
+                (
+                  name //for each file, read its contents
+                ) =>
+                  textFile(name).then((log) => {
+                    //split file content into individual timestamps
+                    log
+                      .trim()
+                      .split("\n")
+                      .forEach((timestampStr) => {
+                        const timestamp = timestampStr.split("\n");
+                        const date = new Date(timestamp);
+
+                        //if the day matches the target day, increment the hour slot
+                        if (date.getDay() === day) {
+                          const hour = date.getHours();
+                          hoursTable[hour]++;
+                        }
+                      });
+                  })
+              )
+            );
+          })
+          .then(() => hoursTable); // retur the hours table after all files are processed.
+      }
+
+      // The textFile helper function
+      function textFile(filename) {
+        return new Promise((resolve, reject) => {
+          readTextFile(filename, (text, error) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(text);
+            }
+          });
+        });
+      }
+
+      // test cases
+      activityTable(6).then((table) => console.log(activityGraph(table)));
+    </script>
+  </body>
+</html>

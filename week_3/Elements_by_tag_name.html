@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ELEMENTS BY TAG NAME</title>
+  </head>
+  <body>
+    <h1>Heading with a <span>span</span> element.</h1>
+    <p>A paragraph with <span>one</span>, <span>two</span> spans</p>
+
+    <script>
+      function byTagName(node, tagName) {
+        let nodeCount = [];
+        function search(node) {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.nodeName === tagName.toUpperCase()) {
+              nodeCount.push(node); // add matching element to the array of nodes
+            }
+            for (let child of node.childNodes) {
+              search(child); //recursively search over the child node
+            }
+          }
+        }
+        search(node); // start search from the root node
+        return nodeCount;
+      }
+
+      console.log(byTagName(document.body, "h1").length);
+    </script>
+  </body>
+</html>

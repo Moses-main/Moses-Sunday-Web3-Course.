@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Cat's Hat</title>
+  </head>
+  <body>
+    <style>
+      body {
+        min-height: 200px;
+      }
+    </style>
+    <p style="text-align: center">
+      <img src="./web_dev.jpg" id="cat" alt="" style="position: absolute" ; />
+      <img
+        src="./screenshot.png"
+        id="hat"
+        alt=""
+        style="position: absolute"
+        ;
+        width="400px; height:auto;"
+      />
+    </p>
+
+    <script>
+      let cat = document.querySelector("#cat");
+      let hat = document.getElementById("#hat");
+
+      let angle = 0;
+      let lastTime = null;
+
+      //function animate(time) {
+      //if (lastTime != null) angle += (time - lastTime) * 0.001;
+      //lastTime = null;
+
+      // cat positioni
+      //cat.style.top = Math.sin(angle) * 40 + 40 + "px";
+      //cat.style.left = Math.cos(angle) * 200 + 230 + "px";
+
+      // hat position
+      //hat.style.top = Math.sin(angle) * 40 + 40 + "px";
+      //hat.style.left = Math.cos(angle) * 200 + 230 + "px";
+
+      //requestAnimationFrame(newTime);
+      //}
+
+      function animate(time) {
+        if (lastTime != null) angle += (time - lastTime) * 0.001;
+        lastTime = time;
+
+        // Cat's position on the larger ellipse
+
+        // cat.style.top = (Math.sin(angle) + Math.PI) * 40 + 40 + "px";
+        //cat.style.left = (Math.cos(angle) + Math.PI) * 200 + 230 + "px";
+
+        // Option 1
+        //hat.style.top = (Math.sin(angle) + Math.PI) * 40 + 40 + "px";
+        //hat.style.left = (Math.cos(angle) + Math.PI) * 200 + 230 + "px";
+
+        // option 2: make the hat circle around the cat in a smaller orbit
+        //hat.style.top =
+        //  parseFloat(cat.style.top) + Math.sin(angle * 2) * 20 + "px";
+        //hat.style.left =
+        // parseFloat(cat.style.left) + Math.cos(angle * 2) * 20 + "px";
+
+        // option 3 (cat and hat follow diff eclipse)
+        cat.style.top = Math.sin(angle * 0.8) * 40 + 40 + "px";
+        cat.style.left = Math.cos(angle * 0.8) * 200 + 230 + "px";
+
+        hat.style.top = Math.sin(angle * 1.2) * 50 + 60 + "px";
+        hat.style.left = Math.cos(angle * 1.2) * 180 + 230 + "px";
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    </script>
+  </body>
+</html>
