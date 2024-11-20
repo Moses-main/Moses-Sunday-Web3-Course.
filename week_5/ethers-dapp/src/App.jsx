@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
 
+import "./App.css"
+
 const App = () => {
   const [account, setAccount] = useState(null);
   const [balance, setBalance] = useState("0.00");
@@ -30,8 +32,7 @@ const App = () => {
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const balance = await provider.getBalance(address);
-      // setBalance(ethers.formatEther(balance));
-      setBalance(ethers.utils.formatEther(balance))
+      setBalance(provider.formatEther(balance))
     } catch (error) {
       console.error("Failed to fetch balance:", error);
     }
@@ -45,24 +46,22 @@ const App = () => {
     }
 
     try {
-      const recAddress = document.getElementById("address").value
-      const amount  = document.getElementById("amount").value
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
       setStatus("Sending transaction...");
       const tx = await signer.sendTransaction({
-        // to: recipient,
-        to: recAddress,
+        to: recipient,
         value: ethers.parseEther(amount),
       });
 
-      await tx.wait();
+     await tx.wait();
       setStatus("Transaction successful!");
       await fetchBalance(account);
+
     } catch (error) {
-      console.error("Failed to send ETH:", error);
-      setStatus("Transaction failed.");
+      console.error("Failed to send ETH:", error.message);
+      setStatus("Transaction failed")
     }
   };
 
@@ -77,6 +76,7 @@ const App = () => {
         <div>
           <p>Connected Account: {account}</p>
           <p>Balance: {balance} ETH</p>
+          {/* <p>TX: {reciept}</p> */}
 
           <h3>Send ETH</h3>
           <input
