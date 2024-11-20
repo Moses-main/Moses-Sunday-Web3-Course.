@@ -1,8 +1,30 @@
-# React + Vite
+# Ethereum DApp with ethers.js
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project demonstrates a simple decentralized application (DApp) using ethers.js. Users can connect their Ethereum wallet (e.g., MetaMask), view their account balance, and send ETH to other addresses.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+- **Connect Wallet**: Connect to an Ethereum wallet via MetaMask.
+- **View Balance**: Retrieve and display the wallet's ETH balance.
+- **Send ETH**: Input a recipient address and ETH amount to send transactions.
+
+---
+
+## Technologies
+- **React**: Frontend framework for building the user interface.
+- **ethers.js**: Library for interacting with the Ethereum blockchain.
+- **MetaMask**: Ethereum wallet for connecting to the DApp.
+
+---
+
+## Setup Instructions
+
+### 1. Clone the Repository
+```bash
+githttps://github.com/Moses-main/Moses-Sunday-Web3-Course..git
+cd week_5/ethers-dapp
+```
+
+
+### 2.Install Dependencies
