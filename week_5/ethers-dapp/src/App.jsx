@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
+import "./App.css";
 
-import "./App.css"
 
 const App = () => {
   const [account, setAccount] = useState(null);
-  const [balance, setBalance] = useState("0.00");
+  const [balance, setBalance] = useState(null);
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [status, setStatus] = useState("");
@@ -14,11 +14,13 @@ const App = () => {
   const connectWallet = async () => {
     if (!window.ethereum) {
       alert("MetaMask is required to use this DApp!");
+      provider = ethers.getAccountProvider()
       return;
     }
 
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
+
       const accounts = await provider.send("eth_requestAccounts", []);
       setAccount(accounts[0]);
       await fetchBalance(accounts[0]);
@@ -32,7 +34,7 @@ const App = () => {
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const balance = await provider.getBalance(address);
-      setBalance(provider.formatEther(balance))
+      setBalance(ethers.formatEther(balance));
     } catch (error) {
       console.error("Failed to fetch balance:", error);
     }
@@ -55,18 +57,17 @@ const App = () => {
         value: ethers.parseEther(amount),
       });
 
-     await tx.wait();
+      await tx.wait();
       setStatus("Transaction successful!");
       await fetchBalance(account);
-
     } catch (error) {
-      console.error("Failed to send ETH:", error.message);
-      setStatus("Transaction failed")
+      console.error("Failed to send ETH:", error);
+      setStatus("Transaction failed.");
     }
   };
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
+    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" , }}>
       <h1>Ethereum DApp</h1>
       {!account ? (
         <button onClick={connectWallet} style={styles.button}>
@@ -76,27 +77,25 @@ const App = () => {
         <div>
           <p>Connected Account: {account}</p>
           <p>Balance: {balance} ETH</p>
-          {/* <p>TX: {reciept}</p> */}
 
           <h3>Send ETH</h3>
-          <input
+        <div>
+       
+        <input
             type="text"
             placeholder="Recipient Address"
             value={recipient}
-            id="recAddress"
-            required
             onChange={(e) => setRecipient(e.target.value)}
             style={styles.input}
           />
           <input
             type="text"
-            id="amount"
             placeholder="Amount in ETH"
             value={amount}
-            required
             onChange={(e) => setAmount(e.target.value)}
             style={styles.input}
           />
+        </div>
           <button onClick={sendEth} style={styles.button}>
             Send
           </button>
@@ -129,3 +128,4 @@ const styles = {
 };
 
 export default App;
+
