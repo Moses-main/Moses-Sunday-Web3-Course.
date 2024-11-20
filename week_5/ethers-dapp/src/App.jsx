@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 
 const App = () => {
   const [account, setAccount] = useState(null);
-  const [balance, setBalance] = useState(null);
+  const [balance, setBalance] = useState("0.00");
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [status, setStatus] = useState("");
@@ -30,7 +30,8 @@ const App = () => {
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const balance = await provider.getBalance(address);
-      setBalance(ethers.formatEther(balance));
+      // setBalance(ethers.formatEther(balance));
+      setBalance(ethers.utils.formatEther(balance))
     } catch (error) {
       console.error("Failed to fetch balance:", error);
     }
@@ -44,12 +45,15 @@ const App = () => {
     }
 
     try {
+      const recAddress = document.getElementById("address").value
+      const amount  = document.getElementById("amount").value
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
       setStatus("Sending transaction...");
       const tx = await signer.sendTransaction({
-        to: recipient,
+        // to: recipient,
+        to: recAddress,
         value: ethers.parseEther(amount),
       });
 
@@ -79,13 +83,17 @@ const App = () => {
             type="text"
             placeholder="Recipient Address"
             value={recipient}
+            id="recAddress"
+            required
             onChange={(e) => setRecipient(e.target.value)}
             style={styles.input}
           />
           <input
             type="text"
+            id="amount"
             placeholder="Amount in ETH"
             value={amount}
+            required
             onChange={(e) => setAmount(e.target.value)}
             style={styles.input}
           />
